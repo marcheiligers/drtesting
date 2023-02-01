@@ -6,15 +6,31 @@
 
 # To run the test: ./dragonruby mygame --eval app/tests.rb --no-tick
 
-TEST_FRUIT_DATAS = [{
-  fruits: {
-    apples: {parent: :oranges, v1: 1, v2: 2},
-    oranges: {parent: :bananas, v1: 1, v2: 2},
-    bananas: {parent: :none, v1: 1, v2: 2},
-    lemons: {parent: :bananas, v1: 1, v2: 2},
-  },
-  expected_sort_fruits: [:none, :bananas, :oranges, :lemons, :apples]
-}]
+TEST_FRUIT_DATAS = [
+  {
+    fruits: {
+    },
+    expected_sort_fruits: [:none]
+  }, {
+    fruits: {
+      apples: {parent: :oranges, v1: 1, v2: 2},
+      oranges: {parent: :bananas, v1: 1, v2: 2},
+      bananas: {parent: :none, v1: 1, v2: 2},
+      lemons: {parent: :bananas, v1: 1, v2: 2},
+    },
+    expected_sort_fruits: [:none, :bananas, :oranges, :lemons, :apples]
+  }, {
+    # This test case fails, because the sorting depends on order and :bananas will come before :pears
+    fruits: {
+      apples: {parent: :oranges, v1: 1, v2: 2},
+      oranges: {parent: :bananas, v1: 1, v2: 2},
+      bananas: {parent: :none, v1: 1, v2: 2},
+      lemons: {parent: :bananas, v1: 1, v2: 2},
+      pears: {parent: :none, v1: 1, v2: 2},
+    },
+    expected_sort_fruits: [:none, :pears, :bananas, :oranges, :lemons, :apples]
+  }
+]
 
 def test_sort_fruits(_args, assert)
   TEST_FRUIT_DATAS.each.with_index do |data, i|
